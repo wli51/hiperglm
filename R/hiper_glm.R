@@ -1,6 +1,7 @@
-hiper_glm <- function(design, outcome) {
+#' @export
+hiper_glm <- function(design, outcome, model="linear") {
 
-  upported_model <- c("linear", "logit")
+  supported_model <- c("linear", "logit")
 
   if (!(model %in% supported_model)) {
     stop(sprintf("The model %s is not supported.", model))
