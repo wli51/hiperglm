@@ -12,7 +12,7 @@ hiper_glm <- function(design, outcome, model="linear", option = list()) {
   if (!is.null(option[["mle_solver"]])) {
 
     if (option[["mle_solver"]] == "BFGS") {
-      message("Using BFGS\n")
+      # message("Using BFGS\n")
 
       op <- stats::optim(rnorm(dim(design)[2]),
                          log_likelihood_linear,
@@ -28,7 +28,7 @@ hiper_glm <- function(design, outcome, model="linear", option = list()) {
 
 
   } else {
-    message("No mle_solver option specified, using pseudo inverse by default\n")
+    # message("No mle_solver option specified, using pseudo inverse by default\n")
     coef_estimate <- as.numeric(
       chol2inv(chol(t(design) %*% design))%*%t(design)%*%outcome)
   }
