@@ -14,10 +14,15 @@ hiper_glm <- function(design, outcome, model="linear", option = list()) {
     if (option[["mle_solver"]] == "BFGS") {
       # message("Using BFGS\n")
 
-      op <- stats::optim(rnorm(dim(design)[2]),
-                         log_likelihood_linear,
-                         log_likelihood_gradient_linear,
-                         design,outcome, control = list(fnscale=-1))
+      # op <- stats::optim(rnorm(dim(design)[2]),
+      #                    log_likelihood_linear,
+      #                    log_likelihood_gradient_linear,
+      #                    design,outcome, control = list(fnscale=-1))
+
+      op <- stats::optim(par = rnorm(dim(design)[2]),
+                         fn = function(par) log_likelihood_linear(par, design, outcome),
+                         gr = function(par) log_likelihood_gradient_linear(par, design, outcome),
+                         control = list(fnscale=-1))
 
       coef_estimate <- op$par
 
