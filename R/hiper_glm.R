@@ -29,8 +29,11 @@ hiper_glm <- function(design, outcome, model="linear", option = list()) {
 
   } else {
     # message("No mle_solver option specified, using pseudo inverse by default\n")
+    # coef_estimate <- as.numeric(
+    #   chol2inv(chol(t(design) %*% design))%*%t(design)%*%outcome)
     coef_estimate <- as.numeric(
-      chol2inv(chol(t(design) %*% design))%*%t(design)%*%outcome)
+      chol_solve_linear_system(A = t(design) %*% design, b=t(design) %*% outcome)
+    )
   }
 
   # warning("`hiper_glm` is yet to be implemented.")
