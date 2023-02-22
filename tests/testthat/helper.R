@@ -34,13 +34,13 @@ simulate_data <- function(
 
 
 
-approx_grad <- function(func, x, ...,dx = .Machine$double.eps^(1/3)){
+approx_grad <- function(func, x, dx = .Machine$double.eps^(1/3)){
   numerical_grad <- rep(0, length(x))
 
   for (i in 1:length(x)) {
     numerical_grad[i] = (
-      func(x + c(rep(0, i-1),1,rep(0, length(x)-i))*dx, ...) -
-        func(x - c(rep(0, i-1),1,rep(0, length(x)-i))*dx, ...))/(2*dx)
+      func(x + c(rep(0, i-1),1,rep(0, length(x)-i))*dx) -
+        func(x - c(rep(0, i-1),1,rep(0, length(x)-i))*dx))/(2*dx)
   }
 
   return(numerical_grad)
