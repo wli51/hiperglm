@@ -14,6 +14,13 @@ hiper_glm <- function(design, outcome, model="linear", option = list()) {
     if (option[["mle_solver"]] == "BFGS") {
       message("Using BFGS\n")
 
+      op <- stats::optim(rnorm(dim(design)[2]),
+                         log_likelihood_linear,
+                         log_likelihood_gradient_linear,
+                         design,outcome, control = list(fnscale=-1))
+
+      coef_estimate <- op$par
+
     } else {
       warning("No current plans for adding solver options other than pseudo-inverse and BFGS.")
       stop()
