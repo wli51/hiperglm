@@ -7,6 +7,8 @@ hiper_glm <- function(design, outcome, model="linear", option = list()) {
     stop(sprintf("The model %s is not supported.", model))
   }
 
+  coef_estimate <- NULL
+
   if (!is.null(option[["mle_solver"]])) {
 
     if (option[["mle_solver"]] == "BFGS") {
@@ -28,6 +30,7 @@ hiper_glm <- function(design, outcome, model="linear", option = list()) {
   # TODO: implement find MLE.
   hglm_out <- list()
   class(hglm_out) <- "hglm"
+  hglm_out$coef <- coef_estimate
   return(hglm_out)
 
 }
