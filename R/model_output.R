@@ -1,7 +1,8 @@
 #' @export
 coef.hglm <- function(hglm_out) {
 
-  warning("To be implemented.")
+  # warning("To be implemented.")
+  return(hglm_out$coef)
 
 }
 
