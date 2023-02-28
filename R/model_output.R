@@ -1,7 +1,6 @@
 #' @export
 coef.hglm <- function(hglm_out) {
 
-  # warning("To be implemented.")
   return(hglm_out$coef)
 
 }
@@ -16,7 +15,6 @@ vcov.hglm <- function(hglm_out) {
 #' @export
 print.hglm <- function(hglm_out, ...) {
 
-  # TODO:
   cat("Output of hiperglm")
 
 }
