@@ -1,7 +1,7 @@
 #' @export
 hiper_glm <- function(design, outcome, model="linear", option = list(mle_solver=c("pseudo inverse", "BFGS"))) {
 
-  supported_model <- c("linear", "logit")
+  supported_model <- c("linear")
 
   if (!(model %in% supported_model)) {
 
