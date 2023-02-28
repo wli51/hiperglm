@@ -1,7 +1,10 @@
 #'
 linear.mle.pseudo_inverse <- function(design, outcome) {
-  chol_solve_linear_system(A = t(design) %*% design,
-                           b = t(design) %*% outcome)
+  matrix(chol_solve_linear_system(
+    A = t(design) %*% design,
+    b = t(design) %*% outcome
+  ),
+  ncol = 1)
 
 }
 
