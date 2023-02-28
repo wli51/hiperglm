@@ -6,7 +6,7 @@ linear.mle.pseudo_inverse <- function(design, outcome) {
 
 linear.mle.BFGS <- function(design, outcome) {
 
-  op <- stats::optim(par = rnorm(dim(design)[2]),
+  op <- stats::optim(par = rep(1, dim(design)[2]),
                      fn = function(par) log_likelihood_linear(par, design, outcome),
                      gr = function(par) log_likelihood_gradient_linear(par, design, outcome),
                      control = list(fnscale=-1))
