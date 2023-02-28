@@ -5,7 +5,8 @@ test_that("are_all_close_correct_true", {
   abs_tol = 1e-6
   rel_tol = 1e-6
 
-  v = rnorm(5)
+  v = rep(1e0, 5)
+
   # artificially add tolerable error both relative to the base vector and in
   # absolute term
   w = v + sample(c(1,0,0,0,0))*abs_tol*1e-1
@@ -24,7 +25,7 @@ test_that("are_all_close_rel_false", {
 
   # artificially scale down the base vector and add error term below the
   # absolute tolerance but bigger than the base vector
-  v = rnorm(5)*rel_tol*1e-2
+  v = rep(1e0, 5)*rel_tol*1e-2
   w = v + sample(c(1,0,0,0,0))*rel_tol*1e-1
 
   expect_true(!are_all_close(
@@ -42,7 +43,7 @@ test_that("are_all_close_abs_false", {
   # artificially scale up the base vector so relative error won't be a problem
   # so we may add an error term that is above the absolute tolerance but still
   # small relative to the base vector
-  v = rnorm(5)*1e6
+  v = rep(1e0, 5)*1e6
   w = v + sample(c(1,0,0,0,0))*abs_tol*1e2
 
   expect_true(!are_all_close(
