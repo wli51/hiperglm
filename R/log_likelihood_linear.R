@@ -1,3 +1,4 @@
+#'
 log_likelihood_linear <- function(coef, x, y, noise_var = 1) {
   n = length(y)
 

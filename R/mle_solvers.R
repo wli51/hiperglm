@@ -1,9 +1,11 @@
+#'
 linear.mle.pseudo_inverse <- function(design, outcome) {
   chol_solve_linear_system(A = t(design) %*% design,
                            b = t(design) %*% outcome)
 
 }
 
+#'
 linear.mle.BFGS <- function(design, outcome) {
   op <- stats::optim(
     par = rep(1, dim(design)[2]),
