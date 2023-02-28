@@ -1,36 +1,21 @@
 #' @export
-hiper_glm <- function(design, outcome, model="linear", option = list()) {
+hiper_glm <- function(design, outcome, model="linear", option = list(mle_solver=c("pseudo inverse", "BFGS"))) {
 
   supported_model <- c("linear", "logit")
 
   if (!(model %in% supported_model)) {
+
     stop(sprintf("The model %s is not supported.", model))
+
   }
 
-  coef_estimate <- NULL
+  option$mle_solver <- match.arg(option$mle_solver, c("pseudo inverse", "BFGS"))
 
-  if (!is.null(option[["mle_solver"]])) {
-
-    if (option[["mle_solver"]] == "BFGS") {
-
-      op <- stats::optim(par = rnorm(dim(design)[2]),
-                         fn = function(par) log_likelihood_linear(par, design, outcome),
-                         gr = function(par) log_likelihood_gradient_linear(par, design, outcome),
-                         control = list(fnscale=-1))
-
-      coef_estimate <- op$par
-
-    } else {
-      warning("No current plans for adding solver options other than pseudo-inverse and BFGS.")
-      stop()
-    }
-
-
-  } else {
-    coef_estimate <- as.numeric(
-      chol_solve_linear_system(A = t(design) %*% design, b=t(design) %*% outcome)
-    )
-  }
+  coef_estimate <- switch (option$mle_solver,
+    "pseudo inverse" = linear.mle.pseudo_inverse(design, outcome),
+    "BFGS" = coef_estimate <- linear.mle.BFGS(design, outcome),
+    NULL
+  )
 
   hglm_out <- list()
   class(hglm_out) <- "hglm"
