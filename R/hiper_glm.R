@@ -27,7 +27,7 @@ hiper_glm <-
       option$mle_solver <-
         match.arg(option$mle_solver, c("newton", "BFGS"))
       if (option$mle_solver == "newton") {
-        coef_estimate <- NULL
+        coef_estimate <- logistic.mle.newton(design, outcome)
       } else if (option$mle_solver == "BFGS") {
         coef_estimate <- logistic.mle.BFGS(design, outcome)
       }
