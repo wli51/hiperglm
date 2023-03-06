@@ -35,3 +35,33 @@ logistic.mle.BFGS <- function(design, outcome) {
 logistic.log_likelihood.hessian <- function(coef, x, y) {
   -1*t(x) %*% weight_matrix(coef, x) %*% x
 }
+
+#'
+weight_matrix <- function(coef, x) {
+  n <- dim(x)[1]
+  weight <- matrix(0, nrow=n, ncol=n)
+
+  for (i in 1:n) {
+    p = logistic.fun(coef, x[i,])
+    weight[i,i] = p * (1-p)
+  }
+  weight
+}
+
+logistic.mle.newton <- function(design, outcome, it=1000, start_coef = NULL, qr_tol = 1e-5) {
+
+  if (is.null(start_coef)) {
+    coef <- rep(0, dim(design)[2])
+  } else {
+    coef <- start_coef
+  }
+
+  for (i in 1:it) {
+    hessian <- logistic.log_likelihood.hessian(coef, design, outcome)
+    gradient <- logistic.log_likelihood.gradient(coef, design, outcome)
+
+    coef <- coef - matlib::inv(hessian) %*% gradient
+  }
+
+  matrix(coef, ncol=1)
+}
