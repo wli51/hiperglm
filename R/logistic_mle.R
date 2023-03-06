@@ -74,7 +74,7 @@ logistic.mle.newton <-
         logistic.log_likelihood.gradient(coef, design, outcome)
       coef <- coef - matlib::inv(hessian) %*% gradient
       log_lik_curr <- logistic.log_likelihood(coef, design, outcome)
-      if (log_lik_curr - log_lik_prev < convergence_log_lik_tolerance) {
+      if (log_lik_curr - log_lik_prev < convergence_log_lik_tolerance/2) {
         break
       }
       log_lik_prev <- log_lik_curr
