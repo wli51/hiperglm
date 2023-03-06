@@ -39,13 +39,9 @@ logistic.log_likelihood.hessian <- function(coef, x, y) {
 #'
 weight_matrix <- function(coef, x) {
   n <- dim(x)[1]
-  weight <- matrix(0, nrow = n, ncol = n)
-
-  for (i in 1:n) {
-    p = logistic.fun(coef, x[i, ])
-    weight[i, i] = p * (1 - p)
-  }
-  weight
+  p <- logistic.fun(coef, x)
+  weights <- p*(1-p)
+  matrix(diag(as.numeric(weights)), ncol = n, nrow = n)
 }
 
 logistic.mle.newton <-
