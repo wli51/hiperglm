@@ -22,3 +22,17 @@ logistic.log_likelihood.gradient <- function(coef, x, y) {
 logistic.fun <- function(coef, x) {
   1/(1+exp(-1 * x %*% coef))
 }
+
+#'
+logistic.mle.BFGS <- function(design, outcome) {
+  op <- stats::optim(
+    par = rep(1, dim(design)[2]),
+    fn = function(par)
+      logistic.log_likelihood(par, design, outcome),
+    gr = function(par)
+      logistic.log_likelihood.gradient(par, design, outcome),
+    control = list(fnscale = -1)
+  )
+
+  matrix(op$par, ncol = 1)
+}
