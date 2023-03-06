@@ -8,14 +8,8 @@ logistic.log_likelihood <- function(coef, x, y) {
 
 #'
 logistic.log_likelihood.gradient <- function(coef, x, y) {
-  n <- length(y)
-  m <- length(coef)
-  gradient <- NULL
-  for (j in 1:m) {
-    g <- sum(x[,j]*(y - logistic.fun(coef, x)))
-    gradient <- c(gradient, g)
-  }
-  gradient
+  p <- logistic.fun(coef, x)
+  t(x) %*% (y - p)
 }
 
 #'
@@ -35,4 +29,9 @@ logistic.mle.BFGS <- function(design, outcome) {
   )
 
   matrix(op$par, ncol = 1)
+}
+
+#'
+logistic.log_likelihood.hessian <- function(coef, x, y) {
+  -1*t(x) %*% weight_matrix(coef, x) %*% x
 }
