@@ -40,10 +40,11 @@ logistic.log_likelihood.hessian <- function(coef, x, y) {
 weight_matrix <- function(coef, x) {
   n <- dim(x)[1]
   p <- logistic.fun(coef, x)
-  weights <- p*(1-p)
+  weights <- p * (1 - p)
   matrix(diag(as.numeric(weights)), ncol = n, nrow = n)
 }
 
+#'
 logistic.mle.newton <-
   function(design,
            outcome,
@@ -70,7 +71,8 @@ logistic.mle.newton <-
         logistic.log_likelihood.gradient(coef, design, outcome)
       coef <- coef - matlib::inv(hessian) %*% gradient
       log_lik_curr <- logistic.log_likelihood(coef, design, outcome)
-      if (log_lik_curr - log_lik_prev < convergence_log_lik_tolerance/2) {
+      if (log_lik_curr - log_lik_prev < convergence_log_lik_tolerance /
+          2) {
         break
       }
       log_lik_prev <- log_lik_curr
@@ -78,4 +80,3 @@ logistic.mle.newton <-
 
     matrix(coef, ncol = 1)
   }
-

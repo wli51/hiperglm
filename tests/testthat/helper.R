@@ -1,22 +1,32 @@
-are_all_close <- function(v, w, abs_tol = 1e-6, rel_tol = 1e-6) {
+are_all_close <- function(v,
+                          w,
+                          abs_tol = 1e-6,
+                          rel_tol = 1e-6) {
   abs_diff <- abs(v - w)
   are_all_within_atol <- all(abs_diff < abs_tol)
-  are_all_within_rtol <- all(abs_diff < rel_tol * pmax(abs(v), abs(w)))
+  are_all_within_rtol <-
+    all(abs_diff < rel_tol * pmax(abs(v), abs(w)))
   return(are_all_within_atol && are_all_within_rtol)
 }
 
-simulate_data <- function(
-    n_obs, n_pred, model = "linear", intercept = NULL,
-    coef_true = NULL, design = NULL, seed = NULL, option = list()
-) {
+simulate_data <- function(n_obs,
+                          n_pred,
+                          model = "linear",
+                          intercept = NULL,
+                          coef_true = NULL,
+                          design = NULL,
+                          seed = NULL,
+                          option = list()) {
   if (!is.null(seed)) {
     set.seed(seed)
   }
   if ((model != "linear")  && !is.null(option$signal_to_noise)) {
-    warning(paste(
-      "The `signal_to_noise` option is currently unsupported for",
-      "non-linear models and will be ignored."
-    ))
+    warning(
+      paste(
+        "The `signal_to_noise` option is currently unsupported for",
+        "non-linear models and will be ignored."
+      )
+    )
   }
   if (is.null(coef_true)) {
     coef_true <- rnorm(n_pred, sd = 1 / sqrt(n_pred))
@@ -37,7 +47,7 @@ simulate_data <- function(
     if (is.null(signal_to_noise)) {
       signal_to_noise <- 0.1
     }
-    noise_magnitude <- sqrt(var(expected_mean) / signal_to_noise^2)
+    noise_magnitude <- sqrt(var(expected_mean) / signal_to_noise ^ 2)
     noise <- noise_magnitude * rnorm(n_obs)
     outcome <- expected_mean + noise
   } else {
@@ -53,16 +63,23 @@ simulate_data <- function(
       outcome <- list(n_success = n_success, n_trial = n_trial)
     }
   }
-  return(list(design = design, outcome = outcome, coef_true = coef_true))
+  return(list(
+    design = design,
+    outcome = outcome,
+    coef_true = coef_true
+  ))
 }
 
-approx_grad <- function(func, x, dx = .Machine$double.eps^(1/3)){
+approx_grad <- function(func, x, dx = .Machine$double.eps ^ (1 / 3)) {
   numerical_grad <- rep(0, length(x))
 
   for (i in 1:length(x)) {
-    numerical_grad[i] = (
-      func(x + c(rep(0, i-1),1,rep(0, length(x)-i))*dx) -
-        func(x - c(rep(0, i-1),1,rep(0, length(x)-i))*dx))/(2*dx)
+    numerical_grad[i] = (func(x + c(rep(0, i - 1), 1, rep(0, length(
+      x
+    ) - i)) * dx) -
+      func(x - c(rep(0, i - 1), 1, rep(0, length(
+        x
+      ) - i)) * dx)) / (2 * dx)
   }
 
   return(numerical_grad)
