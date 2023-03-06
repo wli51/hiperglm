@@ -29,7 +29,7 @@ hiper_glm <-
       if (option$mle_solver == "newton") {
         coef_estimate <- NULL
       } else if (option$mle_solver == "BFGS") {
-        coef_estimate <- NULL
+        coef_estimate <- logistic.mle.BFGS(design, outcome)
       }
     }
 
