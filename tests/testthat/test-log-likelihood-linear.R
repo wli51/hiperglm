@@ -1,4 +1,4 @@
-test_that("log_likelihood_linear_gradient against numerical gradient", {
+test_that("linear.log.likelihood.gradient against numerical gradient", {
   n_obs <- 32
   n_pred <- 4
   data <-
