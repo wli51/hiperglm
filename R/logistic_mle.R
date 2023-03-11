@@ -18,20 +18,6 @@ logistic <- function(coef, x) {
 }
 
 #'
-logistic.mle.BFGS <- function(design, outcome) {
-  op <- stats::optim(
-    par = rep(1, dim(design)[2]),
-    fn = function(par)
-      logistic.log.likelihood(par, design, outcome),
-    gr = function(par)
-      logistic.log.likelihood.gradient(par, design, outcome),
-    control = list(fnscale = -1)
-  )
-
-  matrix(op$par, ncol = 1)
-}
-
-#'
 logistic.log.likelihood.hessian <- function(coef, x, y) {
   -1 * t(x) %*% weight_matrix(coef, x) %*% x
 }
