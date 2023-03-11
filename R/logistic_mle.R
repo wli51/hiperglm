@@ -35,7 +35,8 @@ logistic.mle.newton <-
   function(design,
            outcome,
            max_it = 1000,
-           start_coef = NULL) {
+           start_coef = NULL,
+           conservative_multiplier = 0.00025) {
     if (is.null(start_coef)) {
       coef <- rep(0, dim(design)[2])
     } else {
@@ -45,7 +46,6 @@ logistic.mle.newton <-
     # distribution, using mean of chi-sq with df1 here as proxy for negligible
     # increase in log likelihood
     negligible_log_lik_increment <- 1
-    conservative_multiplier <- 0.05
     convergence_log_lik_tolerance <- negligible_log_lik_increment *
       conservative_multiplier
 
@@ -57,8 +57,7 @@ logistic.mle.newton <-
         logistic.log.likelihood.gradient(coef, design, outcome)
       coef <- coef - matlib::inv(hessian) %*% gradient
       log_lik_curr <- logistic.log.likelihood(coef, design, outcome)
-      if (log_lik_curr - log_lik_prev < convergence_log_lik_tolerance /
-          2) {
+      if (log_lik_curr - log_lik_prev < convergence_log_lik_tolerance) {
         break
       }
       log_lik_prev <- log_lik_curr
