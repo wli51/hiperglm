@@ -19,7 +19,7 @@ logistic <- function(coef, x) {
 
 #'
 logistic.log.likelihood.hessian <- function(coef, x, y) {
-  -1 * t(x) %*% weight_matrix(coef, x) %*% x
+  -t(x) %*% weight_matrix(coef, x) %*% x
 }
 
 #'
