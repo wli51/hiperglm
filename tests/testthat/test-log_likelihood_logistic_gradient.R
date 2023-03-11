@@ -9,11 +9,11 @@ test_that("log_likelihood_logistic_gradient against numerical gradient",
             start_c <- rep(1, n_pred)
 
             analytical_gradient <-
-              logistic.log_likelihood.gradient(start_c, design, outcome)
+              logistic.log.likelihood.gradient(start_c, design, outcome)
             numerical_gradient <-
               approx_grad(
                 func = function(x)
-                  logistic.log_likelihood(coef = x,
+                  logistic.log.likelihood(coef = x,
                                           x = design,
                                           y = outcome),
                 x = start_c

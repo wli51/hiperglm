@@ -1,19 +1,19 @@
 #'
-logistic.log_likelihood <- function(coef, x, y) {
+logistic.log.likelihood <- function(coef, x, y) {
   n <- length(y)
-  p_x_coef <- logistic.fun(coef, x)
+  p_x_coef <- logistic(coef, x)
   y <- matrix(y, ncol = 1)
   sum(y * log(p_x_coef) + (1 - y) * log(1 - p_x_coef))
 }
 
 #'
-logistic.log_likelihood.gradient <- function(coef, x, y) {
-  p <- logistic.fun(coef, x)
+logistic.log.likelihood.gradient <- function(coef, x, y) {
+  p <- logistic(coef, x)
   t(x) %*% (y - p)
 }
 
 #'
-logistic.fun <- function(coef, x) {
+logistic <- function(coef, x) {
   1 / (1 + exp(-1 * x %*% coef))
 }
 
@@ -22,9 +22,9 @@ logistic.mle.BFGS <- function(design, outcome) {
   op <- stats::optim(
     par = rep(1, dim(design)[2]),
     fn = function(par)
-      logistic.log_likelihood(par, design, outcome),
+      logistic.log.likelihood(par, design, outcome),
     gr = function(par)
-      logistic.log_likelihood.gradient(par, design, outcome),
+      logistic.log.likelihood.gradient(par, design, outcome),
     control = list(fnscale = -1)
   )
 
@@ -32,14 +32,14 @@ logistic.mle.BFGS <- function(design, outcome) {
 }
 
 #'
-logistic.log_likelihood.hessian <- function(coef, x, y) {
+logistic.log.likelihood.hessian <- function(coef, x, y) {
   -1 * t(x) %*% weight_matrix(coef, x) %*% x
 }
 
 #'
 weight_matrix <- function(coef, x) {
   n <- dim(x)[1]
-  p <- logistic.fun(coef, x)
+  p <- logistic(coef, x)
   weights <- p * (1 - p)
   matrix(diag(as.numeric(weights)), ncol = n, nrow = n)
 }
@@ -64,13 +64,13 @@ logistic.mle.newton <-
       conservative_multiplier
 
     for (i in 1:max_it) {
-      log_lik_prev <- logistic.log_likelihood(coef, design, outcome)
+      log_lik_prev <- logistic.log.likelihood(coef, design, outcome)
       hessian <-
-        logistic.log_likelihood.hessian(coef, design, outcome)
+        logistic.log.likelihood.hessian(coef, design, outcome)
       gradient <-
-        logistic.log_likelihood.gradient(coef, design, outcome)
+        logistic.log.likelihood.gradient(coef, design, outcome)
       coef <- coef - matlib::inv(hessian) %*% gradient
-      log_lik_curr <- logistic.log_likelihood(coef, design, outcome)
+      log_lik_curr <- logistic.log.likelihood(coef, design, outcome)
       if (log_lik_curr - log_lik_prev < convergence_log_lik_tolerance /
           2) {
         break
