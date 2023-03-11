@@ -15,7 +15,7 @@ linear.log.likelihood.gradient <-
 
 #'
 linear.mle.pseudo_inverse <- function(design, outcome) {
-  matrix(chol_solve_linear_system(
+  matrix(chol.solve.linear.system(
     A = t(design) %*% design,
     b = t(design) %*% outcome
   ),
@@ -24,7 +24,7 @@ linear.mle.pseudo_inverse <- function(design, outcome) {
 }
 
 #'
-chol_solve_linear_system <- function(A, b) {
+chol.solve.linear.system <- function(A, b) {
   L <- t(chol(A))
   as.numeric(backsolve(t(L), forwardsolve(L, b)))
 
