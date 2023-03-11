@@ -21,7 +21,7 @@ hiper_glm <-
       } else if (option$mle_solver == "BFGS") {
         coef_estimate <- bfgs(design, outcome, model="linear")
       } else {
-        stop("No current plans for adding solver options other than pseudo inverse and BFGS.")
+        stop('No current plans for adding solver options other than "pseudo inverse" and "BFGS".')
       }
     } else if (model == "logit") {
       option$mle_solver <-
