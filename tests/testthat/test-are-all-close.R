@@ -1,4 +1,4 @@
-test_that("are_all_close_correct_true", {
+test_that("are_all_close returns correct true", {
   abs_tol = 1e-6
   rel_tol = 1e-6
 
@@ -9,7 +9,7 @@ test_that("are_all_close_correct_true", {
   expect_true(are_all_close(v, w, abs_tol = abs_tol, rel_tol = rel_tol))
 })
 
-test_that("are_all_close_rel_false", {
+test_that("are_all_close rel false", {
   abs_tol = 1e-6
   rel_tol = 1e-6
 
@@ -19,7 +19,7 @@ test_that("are_all_close_rel_false", {
   expect_false(are_all_close(v, w, abs_tol = abs_tol, rel_tol = rel_tol))
 })
 
-test_that("are_all_close_abs_false", {
+test_that("are_all_close abs false", {
   abs_tol = 1e-6
   rel_tol = 1e-6
 
