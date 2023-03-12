@@ -51,11 +51,7 @@ logistic.mle.newton <-
 
     for (i in 1:max_it) {
       log_lik_prev <- logistic.log.likelihood(coef, design, outcome)
-      hessian <-
-        logistic.log.likelihood.hessian(coef, design, outcome)
-      gradient <-
-        logistic.log.likelihood.gradient(coef, design, outcome)
-      coef <- coef - solve(hessian) %*% gradient
+      coef <- take.one.newton.step(design, outcome, coef)
       log_lik_curr <- logistic.log.likelihood(coef, design, outcome)
       if (log_lik_curr - log_lik_prev < convergence_log_lik_tolerance) {
         break
@@ -65,3 +61,14 @@ logistic.mle.newton <-
 
     matrix(coef, ncol = 1)
   }
+
+#'
+take.one.newton.step <- function(design,
+                                 outcome,
+                                 coef) {
+  hessian <-
+    logistic.log.likelihood.hessian(coef, design, outcome)
+  gradient <-
+    logistic.log.likelihood.gradient(coef, design, outcome)
+  return(coef - solve(hessian) %*% gradient)
+}
