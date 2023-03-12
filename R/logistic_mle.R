@@ -34,6 +34,7 @@ weight.matrix <- function(coef, x) {
 logistic.mle.newton <-
   function(design,
            outcome,
+           solver = "QR",
            max_it = 1000,
            start_coef = NULL,
            conservative_multiplier = 0.00025) {
@@ -42,6 +43,7 @@ logistic.mle.newton <-
     } else {
       coef <- start_coef
     }
+    solver <- match.arg(solver, c("LU", "QR"))
     # 2 times difference in log likelihood under null model follows chi-sq
     # distribution, using mean of chi-sq with df1 here as proxy for negligible
     # increase in log likelihood
@@ -51,7 +53,7 @@ logistic.mle.newton <-
 
     for (i in 1:max_it) {
       log_lik_prev <- logistic.log.likelihood(coef, design, outcome)
-      coef <- take.one.newton.step(design, outcome, coef)
+      coef <- take.one.newton.step(design, outcome, coef, solver)
       log_lik_curr <- logistic.log.likelihood(coef, design, outcome)
       if (log_lik_curr - log_lik_prev < convergence_log_lik_tolerance) {
         break
@@ -65,10 +67,13 @@ logistic.mle.newton <-
 #'
 take.one.newton.step <- function(design,
                                  outcome,
-                                 coef) {
+                                 coef, solver) {
   hessian <-
     logistic.log.likelihood.hessian(coef, design, outcome)
   gradient <-
     logistic.log.likelihood.gradient(coef, design, outcome)
-  return(coef - solve(hessian) %*% gradient)
+
+  delta_coef <- -solve.linear.system(hessian, gradient, solver)
+
+  return(coef + delta_coef)
 }
