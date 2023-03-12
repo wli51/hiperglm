@@ -46,7 +46,7 @@ test_that("take.one.newton.step QR option agrees with LU ", {
   expect_true(
     are_all_close(
       lu_out,
-      lu_out,
+      qr_out,
       abs_tol = 1e-6,
       rel_tol = 1e-6
     )
