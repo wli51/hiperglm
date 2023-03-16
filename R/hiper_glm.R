@@ -19,7 +19,8 @@ hiper_glm <-
       if (option$mle_solver == "pseudo inverse") {
         coef_estimate <- linear.mle.pseudo_inverse(design, outcome)
       } else if (option$mle_solver == "BFGS") {
-        coef_estimate <- bfgs(design, outcome, model="linear")
+        coef_estimate <- bfgs(design, outcome, linear.log.likelihood,
+                              linear.log.likelihood.gradient)
       } else {
         stop('No current plans for adding solver options other than "pseudo inverse" and "BFGS".')
       }
@@ -29,7 +30,9 @@ hiper_glm <-
       if (option$mle_solver == "newton") {
         coef_estimate <- logistic.mle.newton(design, outcome)
       } else if (option$mle_solver == "BFGS") {
-        coef_estimate <- bfgs(design, outcome, model="logit")
+        coef_estimate <- bfgs(design, outcome, 
+                              logistic.log.likelihood, 
+                              logistic.log.likelihood.gradient)
       }
     }
 
