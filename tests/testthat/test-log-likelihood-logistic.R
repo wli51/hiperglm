@@ -52,3 +52,25 @@ test_that("take.one.newton.step QR option agrees with LU ", {
     )
   )
 })
+
+test_that("take.one.newton.step RcppQR option agrees with QR", {
+  n_obs <- 32
+  n_pred <- 4
+  data <-
+    simulate_data(n_obs, n_pred, model = 'logit', seed = 1928)
+  design <- data$design
+  outcome <- data$outcome
+  start_c <- rep(0, n_pred)
+
+  qr_out <- take.one.newton.step(design, outcome, start_c, "QR")
+  RcppQR_out <- take.one.newton.step(design, outcome, start_c, "RcppQR")
+
+  expect_true(
+    are_all_close(
+      qr_out,
+      RcppQR_out,
+      abs_tol = 1e-6,
+      rel_tol = 1e-6
+    )
+  )
+})

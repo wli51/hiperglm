@@ -43,7 +43,7 @@ logistic.mle.newton <-
     } else {
       coef <- start_coef
     }
-    solver <- match.arg(solver, c("LU", "QR"))
+    solver <- match.arg(solver, c("LU", "QR", "RcppQR"))
     # 2 times difference in log likelihood under null model follows chi-sq
     # distribution, using mean of chi-sq with df1 here as proxy for negligible
     # increase in log likelihood
