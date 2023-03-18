@@ -3,7 +3,7 @@ hiper_glm <-
   function(design,
            outcome,
            model = "linear",
-           option = list(mle_solver = NULL)) {
+           option = list(mle_solver = NULL, least_sqare_method = "RcppQR")) {
     supported_model <- c("linear", "logit")
 
     if (!(model %in% supported_model)) {
@@ -17,7 +17,7 @@ hiper_glm <-
       option$mle_solver <-
         match.arg(option$mle_solver, c("pseudo inverse", "BFGS"))
       if (option$mle_solver == "pseudo inverse") {
-        coef_estimate <- linear.mle.pseudo_inverse(design, outcome)
+        coef_estimate <- linear.mle.pseudo_inverse(design, outcome, solver=option$least_sqare_method)
       } else if (option$mle_solver == "BFGS") {
         coef_estimate <- bfgs(design, outcome, linear.log.likelihood,
                               linear.log.likelihood.gradient)
@@ -28,10 +28,10 @@ hiper_glm <-
       option$mle_solver <-
         match.arg(option$mle_solver, c("newton", "BFGS"))
       if (option$mle_solver == "newton") {
-        coef_estimate <- logistic.mle.newton(design, outcome)
+        coef_estimate <- logistic.mle.newton(design, outcome, solver=option$least_sqare_method)
       } else if (option$mle_solver == "BFGS") {
-        coef_estimate <- bfgs(design, outcome, 
-                              logistic.log.likelihood, 
+        coef_estimate <- bfgs(design, outcome,
+                              logistic.log.likelihood,
                               logistic.log.likelihood.gradient)
       }
     }

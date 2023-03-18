@@ -15,7 +15,7 @@ linear.log.likelihood.gradient <-
 
 #'
 linear.mle.pseudo_inverse <- function(design, outcome, solver="QR") {
-  solver <- match.arg(solver, c("LU", "Chol", "QR"))
+  solver <- match.arg(solver, c("RcppQR", "LU", "Chol", "QR"))
   solve.linear.system(t(design) %*% design, t(design) %*% outcome, solver)
 }
 
